@@ -172,7 +172,10 @@ boundaries of that region in buffer."
          (`completion #'openai-completion)
          (`chat       #'openai-chat))
        (cl-case codegpt-tunnel
-         (`completion (buffer-string))
+         (`completion `[(("role" . "system")
+                         ("content" . ,openai-system-instructions))
+                        (("role" . "user")
+                         ("content" . ,(buffer-string)))])
          (`chat       `[(("role"    . "user")
                          ("content" . ,(buffer-string)))]))
        (lambda (data)
